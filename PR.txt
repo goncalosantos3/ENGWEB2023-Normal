@@ -1,0 +1,88 @@
+EXERCÍCIO 1 -> 
+
+EX 1.1 -> 
+- Alterações feitas ao dataset foram:
+  1. Alterei o nome do campo "Id" para "_id" já que o mongoDB precisa de uma chave "_id"
+  2. Alterei o nome de todos os campos que tinham espaços retirando-lhes os espaços (Ex. Número de Registo -> NúmerodeRegisto)
+- Estas alterações foram implementadas no script formatDataset.py
+- Importei o dataset no mongo usando o comando: mongoimport -d plantas -c plantas --file plantas.json --jsonArray
+- Output do comando (houve sucesso): 
+2023-05-30T14:14:45.758+0100	connected to: mongodb://localhost/
+2023-05-30T14:14:46.963+0100	29617 document(s) imported successfully. 0 document(s) failed to import.
+
+EX 1.2 -> 
+1. Quantos registos estão na base de dados?
+R: db.plantas.count()
+
+2. Quantos registos de plantação se encontram na freguesia "São Domingos de Rana"?
+R: db.plantas.find({Freguesia: "São Domingos de Rana"}).count()
+
+3. Qual a lista de freguesias (ordenada alfabeticamente e sem repetições)?
+R: db.plantas.distinct('Freguesia')
+
+4. Qual a distribuição dos registos por freguesia (quantos registos em cada freguesia)
+db.plantas.aggregate([
+  {
+    $group: {
+      _id: "$Freguesia",
+      count: { $sum: 1 }
+    }
+  }
+])
+
+5. Qual a distribuição dos registos por espécie?
+db.plantas.aggregate([
+  {
+    $group: {
+      _id: "$Espécie",
+      count: { $sum: 1 }
+    }
+  }
+])
+
+
+EX 1.3 -> 
+
+Na API de dados para gerar um novo projeto fazemos:
+  npx express-generator ex1
+
+Para instalar as dependências "default" fazemos:
+  npm i 
+
+Para instalar a dependência necessária para a API (ligação com a BD):
+  npm i mongoose --save 
+
+Para correr a aplicação fazemos:
+  npm start
+
+
+Construir a API seguindo estes passos:
+  1- Eliminar as views da API (não são usadas)
+  2- Alterar a porta pela qual o servidor recebe os pedidos para a porta pedida no enunciado (ficheiro www)
+  3- Alterar o ficheiro principal (app.js) para fazer a conexão com o a BD do mongoDB
+  4- Criar a pasta models com o modelo dos documentos do dataset do mongoDB (planta.js)
+  5- Criar a pasta controllers que vai manipular os modelos para fazer alterações na BD (criar, eliminar, editar...) (planta.js)
+  6- Criação de rotas para receber os pedidos definidos no enunciado
+  7- Testar a aplicação desenvolvida recorrendo ao Postman 
+
+EXERCÍCIO 2 -> 
+
+Na INTERFACE para gerar um novo projeto da framework fazemos:
+  npx express-generator --view=pug ex2
+
+Para instalar as dependências "default" fazemos:
+  npm i 
+
+Para instalar a dependência necessária para a INTERFACE (pedidos para a API):
+  npm i axios --save 
+
+Para correr a aplicação fazemos:
+  npm start
+
+
+Construir a INTERFACE seguindo estes passos:
+  1- Tal como para a API, alterar a porta (no ficheiro www)
+  2- Criação das rotas para responder aos pedidos definidos no enunciado
+  3- Acrescentar o ficheiro w3.css à pasta public/stylesheets
+  4- Alterar o ficheiro layout.pug para incluir a stylesheet w3.css
+  5- Criar as views usando o w3.css e o pug
