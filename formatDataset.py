@@ -15,7 +15,7 @@ for item in data:
     del item["Id"]
 
     for key in item.keys():
-        if bool(re.search(r"\s", key)):
+        if bool(re.search(r" ", key)):
             new_key = re.sub(r' ', r'', key)
             adicionar.append(new_key)
             remover.append(key)
